@@ -2,12 +2,11 @@ package engine
 
 import (
 	"bufio"
-	"bytes"
 	"flag"
 	"fmt"
 	"github.com/omakoto/mlib"
+	"io"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 	"text/template"
@@ -104,11 +103,13 @@ type Converter struct {
 	inDiv  bool
 	inSpan bool
 
-	buf bytes.Buffer // to build strings
+	rows int
+
+	buf *bufio.Writer
 }
 
-func NewConverter() Converter {
-	return Converter{}
+func NewConverter(w io.Writer) Converter {
+	return Converter{buf: bufio.NewWriter(w)}
 }
 
 func (c *Converter) resetColor() {
@@ -121,6 +122,7 @@ func (c *Converter) startDiv() {
 	if !c.inDiv {
 		c.inDiv = true
 		c.buf.WriteString("<div>")
+		c.rows++
 	}
 }
 
@@ -232,9 +234,7 @@ func isCsiEnd(b byte) bool {
 	return 64 <= b && b <= 126
 }
 
-func (c *Converter) convert(line string) string {
-	c.buf.Reset()
-
+func (c *Converter) convert(line string) {
 	c.startDiv()
 
 	size := len(line)
@@ -297,7 +297,6 @@ func (c *Converter) convert(line string) string {
 		c.buf.WriteByte(b)
 	}
 	c.closeDiv()
-	return c.buf.String()
 }
 
 type TemplateParams struct {
@@ -307,9 +306,9 @@ type TemplateParams struct {
 	RowCount        int
 }
 
+// TODO Get the input from argument too.
 func (c *Converter) Convert() {
-	f := bufio.NewWriter(os.Stdout)
-	defer f.Flush()
+	defer c.buf.Flush()
 
 	// Header
 	params := TemplateParams{
@@ -320,23 +319,21 @@ func (c *Converter) Convert() {
 
 	tmpl, err := template.New("h").Parse(HtmlHeader)
 	mlib.Check(err)
-	err = tmpl.Execute(f, params)
+	err = tmpl.Execute(c.buf, params)
 	mlib.Check(err)
 
 	// Body
-	rows := 0
 	for line := range mlib.ReadFilesFromArgs() {
-		fmt.Fprint(f, c.convert(line))
-		rows++
+		c.convert(line)
 		if *AutoFlash {
-			f.Flush()
+			c.buf.Flush()
 		}
 	}
 
 	// Footer
-	params.RowCount = rows
+	params.RowCount = c.rows
 	tmpl, err = template.New("f").Parse(HtmlFooter)
 	mlib.Check(err)
-	err = tmpl.Execute(f, params)
+	err = tmpl.Execute(c.buf, params)
 	mlib.Check(err)
 }
