@@ -210,7 +210,6 @@ func (c *Converter) convertCsi(csi string) {
 	}
 
 	c.closeSpan()
-	c.startDiv()
 	c.buf.WriteString("<span style=\"")
 	c.inSpan = true
 
@@ -236,20 +235,19 @@ func isCsiEnd(b byte) bool {
 func (c *Converter) convert(line string) string {
 	c.buf.Reset()
 
+	c.startDiv()
+
 	size := len(line)
 	for i := 0; i < size; i++ {
 		b := line[i]
 		switch b {
 		case '&':
-			c.startDiv()
 			c.buf.WriteString("&amp;")
 			continue
 		case '<':
-			c.startDiv()
 			c.buf.WriteString("&lt;")
 			continue
 		case '>':
-			c.startDiv()
 			c.buf.WriteString("&gt;")
 			continue
 		case 0x0d:
@@ -291,13 +289,11 @@ func (c *Converter) convert(line string) string {
 			}
 			continue
 		}
-		if !*NoConvertControls && 0 <= b && b <= 31 {
-			c.startDiv()
+		if !*NoConvertControls && 0 <= b && b <= 31 && b != '\t' {
 			c.buf.WriteByte('^')
 			c.buf.WriteByte(b + '@')
 			continue
 		}
-		c.startDiv()
 		c.buf.WriteByte(b)
 	}
 	c.closeDiv()
