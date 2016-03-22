@@ -250,15 +250,19 @@ func (c *Converter) convert(line string) {
 		case '>':
 			c.buf.WriteString("&gt;")
 			continue
+		case '\a': // bell, ignore.
+			continue
 		case 0x0d:
-			if i < size-1 && line[i+1] == 0x0a {
+			if i+1 < size && line[i+1] == 0x0a {
 				// CR followed by LF, ignore.
 				continue
 			}
 			fallthrough
 		case 0x0a:
-			c.startDiv()
 			c.closeDiv()
+			if i+1 < size {
+				c.startDiv()
+			}
 			continue
 		case '\x1b':
 			i++
