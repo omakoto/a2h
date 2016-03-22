@@ -11,14 +11,11 @@ body{
   background-color:{{.BackgroundColor}};
   color:{{.TextColor}};
 }
-.l{
+div{
   font-size:10pt;
   font-family:monospace;
   white-space:pre;
   min-height: 1em;
-}
-.panel{
-  display:none;
 }
     </style>
   <head>

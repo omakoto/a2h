@@ -39,11 +39,12 @@ var (
 )
 
 var (
-	Gamma     = flag.Float64("gamma", 1.0, "gamma value for RGB conversion")
-	Title     = flag.String("title", "A2H", "HTML Title")
-	BgColor   = flag.String("bg-color", "#000000", "Background color")
-	TextColor = flag.String("text-color", "#ffffff", "Background color")
-	AutoFlash = flag.Bool("auto-flush", false, "Auto flush")
+	Gamma             = flag.Float64("gamma", 1.0, "gamma value for RGB conversion")
+	Title             = flag.String("title", "A2H", "HTML Title")
+	BgColor           = flag.String("bg-color", "#000000", "Background color")
+	TextColor         = flag.String("text-color", "#ffffff", "Background color")
+	AutoFlash         = flag.Bool("auto-flush", false, "Auto flush")
+	NoConvertControls = flag.Bool("no-convert-controls", false, "Don't convert control characters")
 )
 
 // Color manipulation
@@ -100,6 +101,7 @@ const (
 type Converter struct {
 	fg, bg int // positive: rgb, negative: index, -1000
 	bold   bool
+	inDiv  bool
 	inSpan bool
 
 	buf bytes.Buffer // to build strings
@@ -115,7 +117,22 @@ func (c *Converter) resetColor() {
 	c.bold = false
 }
 
-func (c *Converter) closeIfInSpan() {
+func (c *Converter) startDiv() {
+	if !c.inDiv {
+		c.inDiv = true
+		c.buf.WriteString("<div>")
+	}
+}
+
+func (c *Converter) closeDiv() {
+	c.closeSpan()
+	if c.inDiv {
+		c.inDiv = false
+		c.buf.WriteString("</div>\n")
+	}
+}
+
+func (c *Converter) closeSpan() {
 	if c.inSpan {
 		c.inSpan = false
 		c.buf.WriteString("</span>")
@@ -178,7 +195,7 @@ func (c *Converter) convertCsi(csi string) {
 	}
 
 	if !c.bold && c.fg == defaultColor && c.bg == defaultColor {
-		c.closeIfInSpan()
+		c.closeSpan()
 		return
 	}
 
@@ -192,7 +209,8 @@ func (c *Converter) convertCsi(csi string) {
 		bg = getIndexColor(-bg-1, false)
 	}
 
-	c.closeIfInSpan()
+	c.closeSpan()
+	c.startDiv()
 	c.buf.WriteString("<span style=\"")
 	c.inSpan = true
 
@@ -218,23 +236,31 @@ func isCsiEnd(b byte) bool {
 func (c *Converter) convert(line string) string {
 	c.buf.Reset()
 
-	c.buf.WriteString("<div class=l>")
-
 	size := len(line)
 	for i := 0; i < size; i++ {
 		b := line[i]
 		switch b {
 		case '&':
+			c.startDiv()
 			c.buf.WriteString("&amp;")
 			continue
 		case '<':
+			c.startDiv()
 			c.buf.WriteString("&lt;")
 			continue
 		case '>':
+			c.startDiv()
 			c.buf.WriteString("&gt;")
 			continue
-		case '\x0d':
-		case '\x0a':
+		case 0x0d:
+			if i < size-1 && line[i+1] == 0x0a {
+				// CR followed by LF, ignore.
+				continue
+			}
+			fallthrough
+		case 0x0a:
+			c.startDiv()
+			c.closeDiv()
 			continue
 		case '\x1b':
 			i++
@@ -265,10 +291,16 @@ func (c *Converter) convert(line string) string {
 			}
 			continue
 		}
+		if !*NoConvertControls && 0 <= b && b <= 31 {
+			c.startDiv()
+			c.buf.WriteByte('^')
+			c.buf.WriteByte(b + '@')
+			continue
+		}
+		c.startDiv()
 		c.buf.WriteByte(b)
 	}
-	c.closeIfInSpan()
-	c.buf.WriteString("</div>\n")
+	c.closeDiv()
 	return c.buf.String()
 }
 
