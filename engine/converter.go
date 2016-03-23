@@ -42,6 +42,7 @@ var (
 	Title             = flag.String("title", "A2H", "HTML Title")
 	BgColor           = flag.String("bg-color", "#000000", "Background color")
 	TextColor         = flag.String("text-color", "#ffffff", "Background color")
+	FontSize          = flag.String("font-size", "9pt", "Font size)")
 	AutoFlash         = flag.Bool("auto-flush", false, "Auto flush")
 	NoConvertControls = flag.Bool("no-convert-controls", false, "Don't convert control characters")
 )
@@ -307,6 +308,7 @@ type TemplateParams struct {
 	Title           string
 	BackgroundColor string
 	TextColor       string
+	FontSize        string
 	RowCount        int
 }
 
@@ -319,6 +321,7 @@ func (c *Converter) Convert() {
 		Title:           *Title,
 		BackgroundColor: *BgColor,
 		TextColor:       *TextColor,
+		FontSize:        *FontSize,
 	}
 
 	tmpl, err := template.New("h").Parse(HtmlHeader)

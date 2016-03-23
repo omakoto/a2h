@@ -12,10 +12,10 @@ body{
   color:{{.TextColor}};
 }
 div{
-  font-size:10pt;
+  font-size:{{.FontSize}};
   font-family:monospace;
   white-space:pre;
-  min-height: 1em;
+  min-height:{{.FontSize}};
 }
     </style>
   <head>
