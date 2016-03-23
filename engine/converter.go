@@ -105,6 +105,7 @@ type Converter struct {
 	faint     bool
 	italic    bool
 	underline bool
+	blink     bool
 	negative  bool
 	conceal   bool
 	crossout  bool
@@ -216,6 +217,8 @@ func (c *Converter) convertCsi(csi string) {
 			c.italic = true
 		} else if code == 4 {
 			c.underline = true
+		} else if code == 5 {
+			c.blink = true
 		} else if code == 7 {
 			c.negative = true
 		} else if code == 8 {
@@ -231,6 +234,8 @@ func (c *Converter) convertCsi(csi string) {
 			c.italic = false
 		} else if code == 24 {
 			c.underline = false
+		} else if code == 25 {
+			c.blink = false
 		} else if code == 27 {
 			c.negative = false
 		} else if code == 28 {
@@ -266,7 +271,11 @@ func (c *Converter) convertCsi(csi string) {
 	}
 
 	c.closeSpan()
-	c.buf.WriteString("<span style=\"")
+	c.buf.WriteString("<span ")
+	if c.blink {
+		c.buf.WriteString("class=\"blink\" ")
+	}
+	c.buf.WriteString("style=\"")
 	c.inSpan = true
 
 	if c.bold {

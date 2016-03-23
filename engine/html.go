@@ -17,6 +17,18 @@ div{
   white-space:pre;
   min-height:{{.FontSize}};
 }
+span.blink{
+  animation:         blink-animation 1s infinite;
+  -webkit-animation: blink-animation 1s infinite;
+}
+@keyframes blink-animation {
+  0% { visibility: hidden; }
+  50% { visibility: hidden; }
+}
+@-webkit-keyframes blink-animation {
+  0% { visibility: hidden; }
+  50% { visibility: hidden; }
+}
     </style>
   <head>
 <body>
