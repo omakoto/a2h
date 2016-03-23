@@ -100,7 +100,15 @@ const (
 
 type Converter struct {
 	fg, bg int // positive: rgb, negative: index, -1000
-	bold   bool
+
+	bold      bool
+	faint     bool
+	italic    bool
+	underline bool
+	negative  bool
+	conceal   bool
+	crossout  bool
+
 	inDiv  bool
 	inSpan bool
 
@@ -110,13 +118,33 @@ type Converter struct {
 }
 
 func NewConverter(w io.Writer) Converter {
-	return Converter{buf: bufio.NewWriter(w)}
+	c := Converter{buf: bufio.NewWriter(w)}
+	c.reset()
+	return c
 }
 
-func (c *Converter) resetColor() {
+func (c *Converter) reset() {
 	c.fg = defaultColor
 	c.bg = defaultColor
 	c.bold = false
+	c.faint = false
+	c.italic = false
+	c.underline = false
+	c.negative = false
+	c.conceal = false
+	c.crossout = false
+}
+
+func (c *Converter) hasAttr() bool {
+	return (c.fg != defaultColor ||
+		c.bg != defaultColor ||
+		!c.bold ||
+		!c.faint ||
+		!c.italic ||
+		!c.underline ||
+		!c.negative ||
+		!c.conceal ||
+		!c.crossout)
 }
 
 func (c *Converter) startDiv() {
@@ -179,11 +207,36 @@ func (c *Converter) convertCsi(csi string) {
 		code := parseInt(vals[i], 0) // first code
 		i += 1
 		if code == 0 {
-			c.resetColor()
+			c.reset()
 		} else if code == 1 {
 			c.bold = true
+		} else if code == 2 {
+			c.faint = true
+		} else if code == 3 {
+			c.italic = true
+		} else if code == 4 {
+			c.underline = true
+		} else if code == 7 {
+			c.negative = true
+		} else if code == 8 {
+			c.conceal = true
+		} else if code == 9 {
+			c.crossout = true
 		} else if code == 21 {
 			c.bold = false
+		} else if code == 22 {
+			c.bold = false
+			c.faint = false
+		} else if code == 23 {
+			c.italic = false
+		} else if code == 24 {
+			c.underline = false
+		} else if code == 27 {
+			c.negative = false
+		} else if code == 28 {
+			c.conceal = false
+		} else if code == 29 {
+			c.crossout = false
 		} else if 30 <= code && code <= 37 {
 			c.fg = -(code - 30 + 1) // FG color, index
 		} else if 40 <= code && code <= 47 {
@@ -197,7 +250,7 @@ func (c *Converter) convertCsi(csi string) {
 		}
 	}
 
-	if !c.bold && c.fg == defaultColor && c.bg == defaultColor {
+	if !c.hasAttr() {
 		c.closeSpan()
 		return
 	}
@@ -219,14 +272,44 @@ func (c *Converter) convertCsi(csi string) {
 	if c.bold {
 		c.buf.WriteString("font-weight:bold;")
 	}
-
-	if fg != defaultColor {
-		c.buf.WriteString(fmt.Sprintf("color:#%06x;", gammaRgb(fg)))
+	if c.faint {
+		c.buf.WriteString("opacity:0.5;")
+	}
+	if c.italic {
+		c.buf.WriteString("font-style:italic;")
+	}
+	if c.underline {
+		c.buf.WriteString("text-decoration:underline;")
+	}
+	if c.crossout {
+		c.buf.WriteString("text-decoration:line-through;")
+	}
+	var b, f string
+	if bg == defaultColor {
+		b = *BgColor
+	} else {
+		b = fmt.Sprintf("#%06x", gammaRgb(bg))
 	}
 
-	if bg != defaultColor {
-		c.buf.WriteString(fmt.Sprintf("background-color:#%06x;", gammaRgb(bg)))
+	if fg == defaultColor {
+		f = *TextColor
+	} else {
+		f = fmt.Sprintf("#%06x", gammaRgb(fg))
 	}
+	if c.negative {
+		f, b = b, f
+	}
+	if c.conceal {
+		f = b
+	}
+
+	if f != *TextColor {
+		c.buf.WriteString(fmt.Sprintf("color:%s;", f))
+	}
+	if b != *BgColor {
+		c.buf.WriteString(fmt.Sprintf("background-color:%s;", b))
+	}
+
 	c.buf.WriteString("\">")
 
 }
