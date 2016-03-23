@@ -131,6 +131,7 @@ func (c *Converter) reset() {
 	c.faint = false
 	c.italic = false
 	c.underline = false
+    c.blink = false
 	c.negative = false
 	c.conceal = false
 	c.crossout = false
@@ -139,13 +140,14 @@ func (c *Converter) reset() {
 func (c *Converter) hasAttr() bool {
 	return (c.fg != defaultColor ||
 		c.bg != defaultColor ||
-		!c.bold ||
-		!c.faint ||
-		!c.italic ||
-		!c.underline ||
-		!c.negative ||
-		!c.conceal ||
-		!c.crossout)
+		c.bold ||
+		c.faint ||
+		c.italic ||
+		c.underline ||
+        c.blink ||
+		c.negative ||
+		c.conceal ||
+		c.crossout)
 }
 
 func (c *Converter) startDiv() {
@@ -327,6 +329,14 @@ func isCsiEnd(b byte) bool {
 	return 64 <= b && b <= 126
 }
 
+func peek(line string, index int) int {
+  if index < len(line) {
+    return int(line[index])
+  } else {
+    return -1
+  }
+}
+
 func (c *Converter) convert(line string) {
 	c.startDiv()
 
@@ -346,23 +356,22 @@ func (c *Converter) convert(line string) {
 		case '\a': // bell, ignore.
 			continue
 		case 0x0d:
-			if i+1 < size && line[i+1] == 0x0a {
+			if peek(line, i+1) == 0x0a {
 				// CR followed by LF, ignore.
 				continue
 			}
 			fallthrough
 		case 0x0a:
 			c.closeDiv()
-			if i+1 < size {
+            if peek(line, i+1) != -1 {
 				c.startDiv()
 			}
 			continue
 		case '\x1b':
 			i++
-			if i >= size {
-				continue
-			}
-			switch line[i] {
+			switch peek(line, i) {
+            case -1:
+                continue
 			case '[': // CSI
 				i++
 				csiStart := i
