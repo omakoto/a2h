@@ -131,7 +131,7 @@ func (c *Converter) reset() {
 	c.faint = false
 	c.italic = false
 	c.underline = false
-    c.blink = false
+	c.blink = false
 	c.negative = false
 	c.conceal = false
 	c.crossout = false
@@ -144,7 +144,7 @@ func (c *Converter) hasAttr() bool {
 		c.faint ||
 		c.italic ||
 		c.underline ||
-        c.blink ||
+		c.blink ||
 		c.negative ||
 		c.conceal ||
 		c.crossout)
@@ -330,17 +330,18 @@ func isCsiEnd(b byte) bool {
 }
 
 func peek(line string, index int) int {
-  if index < len(line) {
-    return int(line[index])
-  } else {
-    return -1
-  }
+	if index < len(line) {
+		return int(line[index])
+	} else {
+		return -1
+	}
 }
 
 func (c *Converter) convert(line string) {
 	c.startDiv()
 
 	size := len(line)
+outer:
 	for i := 0; i < size; i++ {
 		b := line[i]
 		switch b {
@@ -363,15 +364,15 @@ func (c *Converter) convert(line string) {
 			fallthrough
 		case 0x0a:
 			c.closeDiv()
-            if peek(line, i+1) != -1 {
+			if peek(line, i+1) != -1 {
 				c.startDiv()
 			}
 			continue
 		case '\x1b':
 			i++
 			switch peek(line, i) {
-            case -1:
-                continue
+			case -1:
+				continue
 			case '[': // CSI
 				i++
 				csiStart := i
@@ -385,10 +386,23 @@ func (c *Converter) convert(line string) {
 					c.convertCsi(line[csiStart:i])
 				}
 				continue
-			case ']': // OSC, ignore until next bell.
-				for i < size && line[i] != '\a' {
+			case ']':
+				i++
+				for {
+					n := peek(line, i)
+					if n == -1 || n == '\a' {
+						continue outer
+					}
+					if n == '\x1b' && peek(line, i+1) == '\\' {
+						i++
+						continue outer
+					}
 					i++
 				}
+				continue
+			case 'c':
+				c.reset()
+				c.closeSpan()
 				continue
 			default: // just eat the next byte
 				continue
