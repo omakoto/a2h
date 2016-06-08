@@ -400,6 +400,9 @@ outer:
 					i++
 				}
 				continue
+			case '(':
+				i++
+				continue
 			case 'c':
 				c.reset()
 				c.closeSpan()
