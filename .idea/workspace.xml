@@ -19,8 +19,8 @@
       <file leaf-file-name="converter.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/engine/converter.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2861">
-              <caret line="258" column="16" lean-forward="true" selection-start-line="258" selection-start-column="16" selection-end-line="258" selection-end-column="16" />
+            <state relative-caret-position="1440">
+              <caret line="209" column="58" lean-forward="true" selection-start-line="209" selection-start-column="58" selection-end-line="209" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -298,12 +298,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1512617603096</updated>
-      <workItem from="1512617606426" duration="4459000" />
+      <workItem from="1512617606426" duration="4531000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4459000" />
+    <option name="totallyTimeSpent" value="4531000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-4" width="3852" height="2116" extended-state="6" />
@@ -481,8 +481,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/converter.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2861">
-          <caret line="258" column="16" lean-forward="true" selection-start-line="258" selection-start-column="16" selection-end-line="258" selection-end-column="16" />
+        <state relative-caret-position="1440">
+          <caret line="209" column="58" lean-forward="true" selection-start-line="209" selection-start-column="58" selection-end-line="209" selection-end-column="58" />
           <folding />
         </state>
       </provider>
