@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"github.com/omakoto/mlib"
 	"io"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 	"text/template"
@@ -38,13 +38,13 @@ var (
 )
 
 var (
-	Gamma             = flag.Float64("gamma", 1.0, "gamma value for RGB conversion")
-	Title             = flag.String("title", "A2H", "HTML Title")
-	BgColor           = flag.String("bg-color", "#000000", "Background color")
-	TextColor         = flag.String("text-color", "#ffffff", "Background color")
-	FontSize          = flag.String("font-size", "9pt", "Font size)")
-	AutoFlash         = flag.Bool("auto-flush", false, "Auto flush")
-	NoConvertControls = flag.Bool("no-convert-controls", false, "Don't convert control characters")
+	gamma             = flag.Float64("gamma", 1.0, "gamma value for RGB conversion")
+	title             = flag.String("title", "A2H", "HTML Title")
+	bgColor           = flag.String("bg-color", "#000000", "Background color")
+	textColor         = flag.String("text-color", "#ffffff", "Background color")
+	fontSize          = flag.String("font-size", "9pt", "Font size)")
+	autoFlash         = flag.Bool("auto-flush", false, "Auto flush")
+	noConvertControls = flag.Bool("no-convert-controls", false, "Don't convert control characters")
 )
 
 // Color manipulation
@@ -53,14 +53,14 @@ func rgb(r, g, b int) int {
 	return r<<16 | g<<8 | b
 }
 
-func gamma(v float64) float64 {
-	return math.Max(0, math.Min(1, math.Pow(v, *Gamma)))
+func gammaConv(v float64) float64 {
+	return math.Max(0, math.Min(1, math.Pow(v, *gamma)))
 }
 
 func gammaRgb(rgbValue int) int {
-	r := gamma(float64((rgbValue>>16)&255) / 255.0)
-	g := gamma(float64((rgbValue>>8)&255) / 255.0)
-	b := gamma(float64((rgbValue)&255) / 255.0)
+	r := gammaConv(float64((rgbValue>>16)&255) / 255.0)
+	g := gammaConv(float64((rgbValue>>8)&255) / 255.0)
+	b := gammaConv(float64((rgbValue)&255) / 255.0)
 	return rgb(int(r*255), int(g*255), int(b*255))
 }
 
@@ -207,7 +207,7 @@ func (c *Converter) convertCsi(csi string) {
 	vals := strings.Split(csi, ";")
 
 	for i := 0; i < len(vals); {
-		code := parseInt(vals[i], 0) // first code
+		code := parseInt(string(vals[i]), 0) // first code
 		i += 1
 		if code == 0 {
 			c.reset()
@@ -297,13 +297,13 @@ func (c *Converter) convertCsi(csi string) {
 	}
 	var b, f string
 	if bg == defaultColor {
-		b = *BgColor
+		b = *bgColor
 	} else {
 		b = fmt.Sprintf("#%06x", gammaRgb(bg))
 	}
 
 	if fg == defaultColor {
-		f = *TextColor
+		f = *textColor
 	} else {
 		f = fmt.Sprintf("#%06x", gammaRgb(fg))
 	}
@@ -314,10 +314,10 @@ func (c *Converter) convertCsi(csi string) {
 		f = b
 	}
 
-	if f != *TextColor {
+	if f != *textColor {
 		c.buf.WriteString(fmt.Sprintf("color:%s;", f))
 	}
-	if b != *BgColor {
+	if b != *bgColor {
 		c.buf.WriteString(fmt.Sprintf("background-color:%s;", b))
 	}
 
@@ -329,7 +329,7 @@ func isCsiEnd(b byte) bool {
 	return 64 <= b && b <= 126
 }
 
-func peek(line string, index int) int {
+func peek(line []byte, index int) int {
 	if index < len(line) {
 		return int(line[index])
 	} else {
@@ -337,7 +337,7 @@ func peek(line string, index int) int {
 	}
 }
 
-func (c *Converter) convert(line string) {
+func (c *Converter) convert(line []byte) {
 	c.startDiv()
 
 	size := len(line)
@@ -383,7 +383,7 @@ outer:
 					continue
 				}
 				if line[i] == 'm' {
-					c.convertCsi(line[csiStart:i])
+					c.convertCsi(string(line[csiStart:i]))
 				}
 				continue
 			case ']':
@@ -412,7 +412,7 @@ outer:
 			}
 			continue
 		}
-		if !*NoConvertControls && 0 <= b && b <= 31 && b != '\t' {
+		if !*noConvertControls && 0 <= b && b <= 31 && b != '\t' {
 			c.buf.WriteByte('^')
 			c.buf.WriteByte(b + '@')
 			continue
@@ -436,29 +436,29 @@ func (c *Converter) Convert() {
 
 	// Header
 	params := TemplateParams{
-		Title:           *Title,
-		BackgroundColor: *BgColor,
-		TextColor:       *TextColor,
-		FontSize:        *FontSize,
+		Title:           *title,
+		BackgroundColor: *bgColor,
+		TextColor:       *textColor,
+		FontSize:        *fontSize,
 	}
 
 	tmpl, err := template.New("h").Parse(HtmlHeader)
-	mlib.Check(err)
+	check(err, "template.Parse failed")
 	err = tmpl.Execute(c.buf, params)
-	mlib.Check(err)
+	check(err, "template.Execute failed")
 
-	// Body
-	for line := range mlib.ReadFilesFromArgs() {
+	ReadFilesFromArgs(os.Args[1:], func(line []byte) bool {
 		c.convert(line)
-		if *AutoFlash {
+		if *autoFlash {
 			c.buf.Flush()
 		}
-	}
+		return true
+	})
 
 	// Footer
 	params.RowCount = c.rows
 	tmpl, err = template.New("f").Parse(HtmlFooter)
-	mlib.Check(err)
+	check(err, "template.Parse failed")
 	err = tmpl.Execute(c.buf, params)
-	mlib.Check(err)
+	check(err, "template.Execute failed")
 }
