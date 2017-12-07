@@ -248,6 +248,10 @@ func (c *Converter) convertCsi(csi string) {
 			c.fg = -(code - 30 + 1) // FG color, index
 		} else if 40 <= code && code <= 47 {
 			c.bg = -(code - 40 + 1) // BG color, index
+		} else if 90 <= code && code <= 97 { // used by rustc
+			c.fg = -(code - 90 + 1) // FG color, index
+		} else if 100 <= code && code <= 107 { // used by rustc
+			c.bg = -(code - 100 + 1) // BG color, index
 		} else if code == 38 {
 			c.fg, i = setColorForRgb(i, vals)
 		} else if code == 48 {
@@ -256,9 +260,12 @@ func (c *Converter) convertCsi(csi string) {
 			// Unknown
 		}
 	}
+	c.startSpanIfNeeded()
+}
 
+func (c *Converter) startSpanIfNeeded() {
+	c.closeSpan()
 	if !c.hasAttr() {
-		c.closeSpan()
 		return
 	}
 
@@ -272,7 +279,6 @@ func (c *Converter) convertCsi(csi string) {
 		bg = getIndexColor(-bg-1, false)
 	}
 
-	c.closeSpan()
 	c.buf.WriteString("<span ")
 	if c.blink {
 		c.buf.WriteString("class=\"blink\" ")
@@ -339,6 +345,7 @@ func peek(line []byte, index int) int {
 
 func (c *Converter) convert(line []byte) {
 	c.startDiv()
+	c.startSpanIfNeeded()
 
 	size := len(line)
 outer:
@@ -366,6 +373,7 @@ outer:
 			c.closeDiv()
 			if peek(line, i+1) != -1 {
 				c.startDiv()
+				c.startSpanIfNeeded()
 			}
 			continue
 		case '\x1b':
@@ -447,7 +455,10 @@ func (c *Converter) Convert() {
 	err = tmpl.Execute(c.buf, params)
 	check(err, "template.Execute failed")
 
-	ReadFilesFromArgs(os.Args[1:], func(line []byte) bool {
+	ReadFilesFromArgs(os.Args[1:], func(line []byte, n int) bool {
+		if n == 1 {
+			c.reset()
+		}
 		c.convert(line)
 		if *autoFlash {
 			c.buf.Flush()

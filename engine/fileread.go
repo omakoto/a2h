@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func ReadFilesFromArgs(args []string, f func(line []byte) bool) {
+func ReadFilesFromArgs(args []string, f func(line []byte, no int) bool) {
 	if args == nil {
 		args = os.Args[1:]
 	}
@@ -17,13 +17,13 @@ func ReadFilesFromArgs(args []string, f func(line []byte) bool) {
 	readFiles(args, f)
 }
 
-func readFiles(names []string, f func(line []byte) bool) {
+func readFiles(names []string, f func(line []byte, no int) bool) {
 	for _, name := range names {
 		openAndReadFile(name, f)
 	}
 }
 
-func openAndReadFile(name string, f func(line []byte) bool) {
+func openAndReadFile(name string, f func(line []byte, no int) bool) {
 	var file *os.File
 	var err error
 
@@ -48,12 +48,14 @@ func openAndReadFile(name string, f func(line []byte) bool) {
 	readFile(file, f)
 }
 
-func readFile(file *os.File, f func(line []byte) bool) {
+func readFile(file *os.File, f func(line []byte, no int) bool) {
 	reader := bufio.NewReader(file)
+	n := 0
 	for {
 		line, err := reader.ReadBytes('\n')
+		n++
 		if line != nil {
-			f(line)
+			f(line, n)
 		}
 		if err == io.EOF {
 			return
