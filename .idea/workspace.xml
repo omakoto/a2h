@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3861519c-54dd-4956-9817-2824748ca586" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change beforePath="$PROJECT_DIR$/engine/converter.go" afterPath="$PROJECT_DIR$/engine/converter.go" />
       <change beforePath="$PROJECT_DIR$/engine/fileread.go" afterPath="$PROJECT_DIR$/engine/fileread.go" />
     </list>
@@ -18,8 +19,8 @@
       <file leaf-file-name="converter.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/engine/converter.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="252" column="20" lean-forward="false" selection-start-line="252" selection-start-column="20" selection-end-line="252" selection-end-column="20" />
+            <state relative-caret-position="2861">
+              <caret line="258" column="16" lean-forward="true" selection-start-line="258" selection-start-column="16" selection-end-line="258" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -68,6 +69,7 @@
         <option value="$PROJECT_DIR$/scripts/presubmit.sh" />
         <option value="$PROJECT_DIR$/engine/fileread.go" />
         <option value="$PROJECT_DIR$/engine/converter.go" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -296,12 +298,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1512617603096</updated>
-      <workItem from="1512617606426" duration="3838000" />
+      <workItem from="1512617606426" duration="4459000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3838000" />
+    <option name="totallyTimeSpent" value="4459000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-4" width="3852" height="2116" extended-state="6" />
@@ -466,10 +468,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="290">
+            <caret line="10" column="7" lean-forward="true" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/engine/converter.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="252" column="20" lean-forward="false" selection-start-line="252" selection-start-column="20" selection-end-line="252" selection-end-column="20" />
+        <state relative-caret-position="2861">
+          <caret line="258" column="16" lean-forward="true" selection-start-line="258" selection-start-column="16" selection-end-line="258" selection-end-column="16" />
           <folding />
         </state>
       </provider>
