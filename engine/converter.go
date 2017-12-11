@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"os"
 	"strconv"
 	"strings"
 	"text/template"
@@ -439,7 +438,7 @@ type TemplateParams struct {
 }
 
 // TODO Get the input from argument too.
-func (c *Converter) Convert() {
+func (c *Converter) Convert(files []string) {
 	defer c.buf.Flush()
 
 	// Header
@@ -455,7 +454,7 @@ func (c *Converter) Convert() {
 	err = tmpl.Execute(c.buf, params)
 	check(err, "template.Execute failed")
 
-	ReadFilesFromArgs(os.Args[1:], func(line []byte, n int) bool {
+	ReadFilesFromArgs(files, func(line []byte, n int) bool {
 		if n == 1 {
 			c.reset()
 		}

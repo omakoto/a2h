@@ -12,5 +12,5 @@ func main() {
 	bashcomp.HandleBashCompletion()
 
 	n := engine.NewConverter(os.Stdout)
-	n.Convert()
+	n.Convert(flag.Args())
 }
