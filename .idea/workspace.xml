@@ -15,8 +15,8 @@
       <file leaf-file-name="converter.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/engine/converter.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1300">
-              <caret line="440" column="20" lean-forward="false" selection-start-line="440" selection-start-column="20" selection-end-line="440" selection-end-column="20" />
+            <state relative-caret-position="-788">
+              <caret line="392" column="53" lean-forward="true" selection-start-line="392" selection-start-column="53" selection-end-line="392" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -86,10 +86,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="927" />
-    <option name="y" value="159" />
-    <option name="width" value="2610" />
-    <option name="height" value="1685" />
+    <option name="x" value="566" />
+    <option name="y" value="142" />
+    <option name="width" value="3030" />
+    <option name="height" value="1839" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -122,9 +122,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -248,10 +248,10 @@
     <option name="totallyTimeSpent" value="4612000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="927" y="159" width="2610" height="1685" extended-state="0" />
+    <frame x="566" y="142" width="3030" height="1839" extended-state="0" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39888313" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34779638" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cargo" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -289,6 +289,30 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/engine/converter.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="14" column="9" lean-forward="false" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/engine/fileread.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1392">
+          <caret line="48" column="1" lean-forward="false" selection-start-line="48" selection-start-column="1" selection-end-line="48" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/engine/converter.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -465,8 +489,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/converter.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1300">
-          <caret line="440" column="20" lean-forward="false" selection-start-line="440" selection-start-column="20" selection-end-line="440" selection-end-column="20" />
+        <state relative-caret-position="-788">
+          <caret line="392" column="53" lean-forward="true" selection-start-line="392" selection-start-column="53" selection-end-line="392" selection-end-column="53" />
           <folding />
         </state>
       </provider>
