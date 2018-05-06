@@ -255,8 +255,6 @@ func (c *Converter) convertCsi(csi string) {
 			c.fg, i = setColorForRgb(i, vals)
 		} else if code == 48 {
 			c.bg, i = setColorForRgb(i, vals)
-		} else {
-			// Unknown
 		}
 	}
 	c.startSpanIfNeeded()
@@ -398,23 +396,21 @@ outer:
 				for {
 					n := peek(line, i)
 					if n == -1 || n == '\a' {
-						continue outer
+						break
 					}
 					if n == '\x1b' && peek(line, i+1) == '\\' {
 						i++
-						continue outer
+						break
 					}
 					i++
 				}
-				continue
+				continue outer
 			case '(':
 				i++
 				continue
 			case 'c':
 				c.reset()
 				c.closeSpan()
-				continue
-			default: // just eat the next byte
 				continue
 			}
 			continue
