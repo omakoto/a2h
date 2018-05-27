@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/omakoto/go-common/src/textio"
 	"io"
 	"math"
 	"strconv"
 	"strings"
 	"text/template"
-	"github.com/omakoto/go-common/src/textio"
 )
 
 var (
@@ -88,9 +88,8 @@ func xterm256ColortoRgb(value int) int {
 func getIndexColor(index int, bold bool) int {
 	if bold {
 		return BrightColors[index]
-	} else {
-		return StandardColors[index]
 	}
+	return StandardColors[index]
 }
 
 // Converter
@@ -173,13 +172,12 @@ func (c *Converter) closeSpan() {
 	}
 }
 
-func parseInt(s string, default_ int) int {
+func parseInt(s string, defValue int) int {
 	v, err := strconv.Atoi(s)
 	if err == nil {
 		return v
-	} else {
-		return default_
 	}
+	return defValue
 }
 
 func setColorForRgb(i int, vals []string) (int, int) {
@@ -208,7 +206,7 @@ func (c *Converter) convertCsi(csi string) {
 
 	for i := 0; i < len(vals); {
 		code := parseInt(string(vals[i]), 0) // first code
-		i += 1
+		i++
 		if code == 0 {
 			c.reset()
 		} else if code == 1 {
@@ -336,9 +334,8 @@ func isCsiEnd(b byte) bool {
 func peek(line []byte, index int) int {
 	if index < len(line) {
 		return int(line[index])
-	} else {
-		return -1
 	}
+	return -1
 }
 
 func (c *Converter) convert(line []byte) {
@@ -434,7 +431,6 @@ type TemplateParams struct {
 	RowCount        int
 }
 
-// TODO Get the input from argument too.
 func (c *Converter) Convert(files []string) {
 	defer c.buf.Flush()
 
@@ -446,7 +442,7 @@ func (c *Converter) Convert(files []string) {
 		FontSize:        *fontSize,
 	}
 
-	tmpl, err := template.New("h").Parse(HtmlHeader)
+	tmpl, err := template.New("h").Parse(HTMLHeader)
 	check(err, "template.Parse failed")
 	err = tmpl.Execute(c.buf, params)
 	check(err, "template.Execute failed")
@@ -464,7 +460,7 @@ func (c *Converter) Convert(files []string) {
 
 	// Footer
 	params.RowCount = c.rows
-	tmpl, err = template.New("f").Parse(HtmlFooter)
+	tmpl, err = template.New("f").Parse(HTMLFooter)
 	check(err, "template.Parse failed")
 	err = tmpl.Execute(c.buf, params)
 	check(err, "template.Execute failed")

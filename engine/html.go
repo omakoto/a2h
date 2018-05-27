@@ -1,7 +1,7 @@
 package engine
 
 const (
-	HtmlHeader = `<!DOCTYPE html>
+	HTMLHeader = `<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -33,7 +33,7 @@ span.blink{
   <head>
 <body>
 `
-	HtmlFooter = `
+	HTMLFooter = `
 <!-- {{.RowCount}} rows -->
 </body>
 </html>
