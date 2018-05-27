@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+	"github.com/omakoto/go-common/src/textio"
 )
 
 var (
@@ -450,15 +451,15 @@ func (c *Converter) Convert(files []string) {
 	err = tmpl.Execute(c.buf, params)
 	check(err, "template.Execute failed")
 
-	ReadFilesFromArgs(files, func(line []byte, n int) bool {
-		if n == 1 {
+	textio.ReadFiles(files, func(line []byte, lineNo int, filename string) error {
+		if lineNo == 1 {
 			c.reset()
 		}
 		c.convert(line)
 		if *autoFlash {
 			c.buf.Flush()
 		}
-		return true
+		return nil
 	})
 
 	// Footer
