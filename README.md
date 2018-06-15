@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/omakoto/a2h.svg?branch=master)](https://travis-ci.org/omakoto/a2h)
 # A2H
 
 ANSI escape sequence to HTML converter. (Go version)
