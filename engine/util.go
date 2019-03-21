@@ -9,6 +9,6 @@ func check(err error, message string) {
 	if err == nil {
 		return
 	}
-	fmt.Fprintf(os.Stderr, message)
+	fmt.Fprint(os.Stderr, message)
 	os.Exit(1)
 }

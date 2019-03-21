@@ -413,7 +413,7 @@ outer:
 			}
 			continue
 		}
-		if !*noConvertControls && 0 <= b && b <= 31 && b != '\t' {
+		if !*noConvertControls && b <= 31 && b != '\t' {
 			c.buf.WriteByte('^')
 			c.buf.WriteByte(b + '@')
 			continue
