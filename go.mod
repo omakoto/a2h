@@ -1,11 +1,9 @@
 module github.com/omakoto/a2h
 
-go 1.13
-
-//replace github.com/omakoto/go-common => ../go-common
-//replace github.com/omakoto/bashcomp => ../bashcomp
+go 1.20
 
 require (
-	github.com/omakoto/bashcomp v0.0.0-20191001040326-338171c6981c
-	github.com/omakoto/go-common v0.0.0-20190929182938-7ec82e969da9
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/omakoto/bashcomp v0.0.0-20230823043649-5688cd34e007
+	github.com/omakoto/go-common v0.0.0-20230823052316-200605c4c0d0
 )

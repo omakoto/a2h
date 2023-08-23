@@ -5,10 +5,8 @@ github.com/mattn/go-isatty v0.0.9/go.mod h1:YNRxwqDuOph6SZLI9vUUz6OYw3QyUt7WiY2y
 github.com/mattn/go-runewidth v0.0.4/go.mod h1:LwmH8dsx7+W8Uxz3IHJYH5QSwggIsqBzpuz5H//U1FU=
 github.com/omakoto/bashcomp v0.0.0-20191001040326-338171c6981c h1:E8UffRfU3kuPvwIlxSDrGYmq4Z2Xu8dRZYsXpWyxA6Q=
 github.com/omakoto/bashcomp v0.0.0-20191001040326-338171c6981c/go.mod h1:dDbUo3w3QfGa6YUjnvdSAvHcJU40VCG/apbdDaetp8k=
-github.com/omakoto/go-common v0.0.0-20190929182938-7ec82e969da9 h1:PLuzwAS/CCOxCzg5c67yx0Uv4tSCscIffBvHhaG6hLg=
-github.com/omakoto/go-common v0.0.0-20190929182938-7ec82e969da9/go.mod h1:qZAhdjMaCqvLTLpircN5wqm3B0S7eUTd6flSszQF5gE=
-github.com/pborman/getopt v0.0.0-20190409184431-ee0cd42419d3 h1:YtFkrqsMEj7YqpIhRteVxJxCeC3jJBieuLr0d4C4rSA=
-github.com/pborman/getopt v0.0.0-20190409184431-ee0cd42419d3/go.mod h1:85jBQOZwpVEaDAr341tbn15RS4fCAsIst0qp7i8ex1o=
+github.com/omakoto/go-common v0.0.0-20210223020755-bd49cd9ce44e h1:oOGqrntHEfN1zJFKRH/WXB3GU0D55QHNbtGdgJK7l4Q=
+github.com/omakoto/go-common v0.0.0-20210223020755-bd49cd9ce44e/go.mod h1:20DT00ZbWKJ0zWLC+EllLOeTil+bovjE/0lCyLJ/Y00=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
@@ -21,7 +19,6 @@ golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5h
 golang.org/x/sys v0.0.0-20190412213103-97732733099d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
-gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
