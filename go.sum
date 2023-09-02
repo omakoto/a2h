@@ -4,3 +4,6 @@ github.com/omakoto/bashcomp v0.0.0-20230823043649-5688cd34e007 h1:HpsZfkD3p6SBoy
 github.com/omakoto/bashcomp v0.0.0-20230823043649-5688cd34e007/go.mod h1:/8OfFsk+m5Uzfkd3Z7nHTVJGz7S+6eBosRineOCkMK4=
 github.com/omakoto/go-common v0.0.0-20230823052316-200605c4c0d0 h1:NnC0R0mi5OGAP1s0aWBqKppycTri5AGXigBTjS34NE0=
 github.com/omakoto/go-common v0.0.0-20230823052316-200605c4c0d0/go.mod h1:S0LSmmdEFhCp8XJLc3YPFWK7W4qcyRgyfrGBsX/tzMo=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/stretchr/testify v1.4.0 h1:2E4SXV/wtOkTonXsotYi4li6zVWxYlZuYNCXe9XRJyk=
+gopkg.in/yaml.v2 v2.2.8 h1:obN1ZagJSUGI0Ek/LBmuj4SNLPfIny3KsKFopxRdj10=
