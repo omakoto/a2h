@@ -1,17 +1,48 @@
 [![Build Status](https://travis-ci.org/omakoto/a2h.svg?branch=master)](https://travis-ci.org/omakoto/a2h)
-# A2H
+# a2h — ANSI to HTML converter
 
-ANSI escape sequence to HTML converter. (Go version)
+`a2h` converts terminal output containing ANSI escape sequences into a self-contained HTML file, preserving colors and text attributes.
 
-## Featurs
+## Features
 
-- Supports major attributes (bold, italic, faint, underline, reverse, etc).
-- Visualizes control characters too; e.g. BS -> ^H.
-- Supports Xterm 256 colors and kterm 24bit colors too.
+- Supports standard text attributes: bold, faint, italic, underline, blink, reverse video, conceal, strikethrough
+- Supports standard 8/16 ANSI colors, xterm 256-color palette, and 24-bit (truecolor) RGB
+- Visualizes control characters (e.g. BS → `^H`)
+- Outputs a complete, self-contained HTML page with embedded CSS
 
 ## Installation
 
-go get -u github.com/omakoto/a2h
+```
+go install github.com/omakoto/a2h@latest
+```
+
+## Usage
+
+```
+a2h [flags] [file ...]
+```
+
+Read from files or stdin, write HTML to stdout:
+
+```sh
+# Convert a file
+a2h output.txt > output.html
+
+# Pipe command output
+some-command 2>&1 | a2h > output.html
+```
+
+### Flags
+
+| Flag | Default | Description |
+|---|---|---|
+| `-title` | `A2H` | HTML page title |
+| `-bg-color` | `#000000` | Background color |
+| `-text-color` | `#ffffff` | Default text color |
+| `-font-size` | `9pt` | Font size |
+| `-gamma` | `1.0` | Gamma correction for RGB color conversion |
+| `-auto-flush` | false | Flush output after each line |
+| `-no-convert-controls` | false | Don't visualize control characters |
 
 ## See also
 
