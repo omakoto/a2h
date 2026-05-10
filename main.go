@@ -11,6 +11,7 @@ import (
 func main() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, `a2h - Convert ANSI escape sequences to HTML
+
   https://github.com/omakoto/a2h
 
 Reads from files or stdin and writes a self-contained HTML page to stdout,
